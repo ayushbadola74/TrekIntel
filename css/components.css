@@ -1,0 +1,601 @@
+/* ==========================================================================
+   TrekIntel — Components Stylesheet
+   Cards, Filters, Weather Widgets, Leaflet Map, Skeletons & Empty States
+   ========================================================================== */
+
+/* ==========================================================================
+   Trek Cards Grid & Card Styles
+   ========================================================================== */
+
+.trek-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: var(--space-8);
+}
+
+.trek-card {
+  background-color: var(--color-surface);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  transition: transform var(--transition-normal), box-shadow var(--transition-normal), border-color var(--transition-normal);
+  position: relative;
+}
+
+.trek-card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--color-border-hover);
+}
+
+/* Card Image & Badges */
+.trek-card-media {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background-color: var(--color-primary-dark);
+}
+
+.trek-card-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform var(--transition-slow);
+}
+
+.trek-card:hover .trek-card-img {
+  transform: scale(1.05);
+}
+
+.trek-card-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(16, 32, 25, 0.15) 0%, rgba(16, 32, 25, 0.65) 100%);
+  pointer-events: none;
+}
+
+.trek-card-top-badges {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  right: 14px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 2;
+}
+
+/* Favorite Button */
+.card-fav-btn {
+  background: rgba(255, 255, 255, 0.88);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: none;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-secondary);
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: all var(--transition-fast);
+}
+
+.card-fav-btn:hover {
+  background: #FFFFFF;
+  color: #C0392B;
+  transform: scale(1.1);
+}
+
+.card-fav-btn.active {
+  background: #FFFFFF;
+  color: #C0392B;
+}
+
+.card-fav-btn.active svg {
+  fill: #C0392B;
+}
+
+/* Card Content */
+.trek-card-body {
+  padding: var(--space-6);
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+}
+
+.trek-card-location {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.825rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: var(--space-2);
+}
+
+.trek-card-location svg {
+  color: var(--color-primary-light);
+}
+
+.trek-card-title {
+  font-size: 1.25rem;
+  margin-bottom: var(--space-3);
+  line-height: 1.35;
+  color: var(--color-primary-dark);
+}
+
+.trek-card-desc {
+  font-size: 0.9rem;
+  color: var(--color-text-secondary);
+  line-height: 1.5;
+  margin-bottom: var(--space-5);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Key Metrics Strip */
+.trek-card-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-3);
+  padding: var(--space-3) 0;
+  border-top: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border);
+  margin-bottom: var(--space-5);
+}
+
+.card-stat-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.card-stat-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: var(--radius-sm);
+  background-color: var(--color-primary-subtle);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.card-stat-info {
+  display: flex;
+  flex-direction: column;
+}
+
+.card-stat-label {
+  font-size: 0.7rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-text-muted);
+}
+
+.card-stat-val {
+  font-size: 0.875rem;
+  font-weight: 700;
+  font-family: var(--font-heading);
+  color: var(--color-primary-dark);
+}
+
+/* Card Footer */
+.trek-card-footer {
+  margin-top: auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+/* ==========================================================================
+   Filter & Search Toolbar (Explore Page)
+   ========================================================================== */
+
+.filter-toolbar {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--space-8);
+}
+
+.filter-main-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr auto;
+  gap: var(--space-4);
+  align-items: center;
+}
+
+.search-input-group {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.search-icon {
+  position: absolute;
+  left: 14px;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.search-input-group .form-input {
+  padding-left: 42px;
+}
+
+.filter-chips-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-4);
+  padding-top: var(--space-4);
+  border-top: 1px solid var(--color-border);
+}
+
+.filter-chip-label {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--color-text-muted);
+  margin-right: var(--space-2);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.filter-chip {
+  font-size: 0.825rem;
+  font-weight: 600;
+  font-family: var(--font-heading);
+  padding: 6px 14px;
+  border-radius: var(--radius-full);
+  background-color: var(--color-cream);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+}
+
+.filter-chip:hover {
+  border-color: var(--color-primary-light);
+  color: var(--color-primary-dark);
+}
+
+.filter-chip.active {
+  background-color: var(--color-primary);
+  color: var(--color-text-inverse);
+  border-color: var(--color-primary);
+}
+
+.filter-results-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+}
+
+.filter-results-count {
+  font-weight: 700;
+  color: var(--color-primary-dark);
+}
+
+/* ==========================================================================
+   Weather Widget (Open-Meteo Integration)
+   ========================================================================== */
+
+.weather-container {
+  background: linear-gradient(135deg, #173D2D 0%, #102019 100%);
+  color: var(--color-text-inverse);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-lg);
+  border: 1px solid var(--color-border-dark);
+  position: relative;
+  overflow: hidden;
+}
+
+.weather-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+}
+
+.weather-title {
+  color: var(--color-text-inverse);
+  font-size: 1.35rem;
+  margin-bottom: var(--space-1);
+}
+
+.weather-location-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.85rem;
+  color: var(--color-accent);
+  background: rgba(196, 239, 145, 0.12);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+}
+
+.weather-current {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: var(--space-8);
+  align-items: center;
+  margin-bottom: var(--space-8);
+  padding-bottom: var(--space-8);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.current-temp-block {
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+}
+
+.weather-main-icon {
+  width: 56px;
+  height: 56px;
+  color: var(--color-accent);
+}
+
+.current-degrees {
+  font-family: var(--font-heading);
+  font-size: 3.5rem;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--color-text-inverse);
+}
+
+.current-condition-text {
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--color-accent);
+  margin-top: var(--space-1);
+}
+
+.weather-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: var(--space-4);
+}
+
+.weather-stat-box {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: var(--space-3) var(--space-4);
+}
+
+.weather-stat-label {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #9EAF9F;
+  margin-bottom: 2px;
+}
+
+.weather-stat-value {
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #FFFFFF;
+}
+
+/* 5-Day Forecast Strip */
+.weather-forecast-strip {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+  gap: var(--space-3);
+  margin-bottom: var(--space-6);
+}
+
+.forecast-day-card {
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: var(--space-3);
+  text-align: center;
+  transition: background var(--transition-fast);
+}
+
+.forecast-day-card:hover {
+  background: rgba(255, 255, 255, 0.08);
+}
+
+.forecast-day-name {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #9EAF9F;
+  text-transform: uppercase;
+  margin-bottom: var(--space-2);
+}
+
+.forecast-icon {
+  margin: 0 auto var(--space-2) auto;
+  color: var(--color-accent);
+}
+
+.forecast-temps {
+  font-size: 0.85rem;
+  font-weight: 700;
+  font-family: var(--font-heading);
+}
+
+.forecast-max {
+  color: #FFFFFF;
+}
+
+.forecast-min {
+  color: #8E9F8E;
+  margin-left: 4px;
+}
+
+.mountain-safety-note {
+  background: rgba(230, 126, 34, 0.15);
+  border: 1px solid rgba(230, 126, 34, 0.3);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-3);
+  font-size: 0.825rem;
+  color: #FFD4A3;
+  line-height: 1.5;
+}
+
+/* ==========================================================================
+   Leaflet Map Styling
+   ========================================================================== */
+
+.map-card-wrapper {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.map-card-header {
+  padding: var(--space-5) var(--space-6);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.map-title {
+  font-size: 1.125rem;
+}
+
+.map-coordinates-pill {
+  font-size: 0.8rem;
+  font-family: monospace;
+  background-color: var(--color-cream);
+  padding: 4px 10px;
+  border-radius: var(--radius-sm);
+  color: var(--color-text-secondary);
+  border: 1px solid var(--color-border);
+}
+
+.interactive-map {
+  width: 100%;
+  height: 400px;
+  background-color: #E8ECE9;
+  z-index: 1;
+}
+
+.leaflet-popup-content-wrapper {
+  border-radius: var(--radius-md) !important;
+  box-shadow: var(--shadow-lg) !important;
+  font-family: var(--font-body) !important;
+  padding: 4px !important;
+}
+
+.custom-map-popup {
+  padding: 8px;
+}
+
+.custom-map-popup h4 {
+  font-size: 1rem;
+  margin-bottom: 4px;
+  color: var(--color-primary-dark);
+}
+
+.custom-map-popup p {
+  font-size: 0.8rem;
+  margin-bottom: 0;
+  color: var(--color-text-secondary);
+}
+
+/* ==========================================================================
+   Skeleton Loaders & Empty States
+   ========================================================================== */
+
+.skeleton {
+  background: linear-gradient(90deg, #ECECE5 25%, #F4F4EE 37%, #ECECE5 63%);
+  background-size: 400% 100%;
+  animation: skeletonPulse 1.4s ease infinite;
+  border-radius: var(--radius-sm);
+}
+
+@keyframes skeletonPulse {
+  0% { background-position: 100% 50%; }
+  100% { background-position: 0 50%; }
+}
+
+.skeleton-card {
+  border-radius: var(--radius-xl);
+  height: 420px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+}
+
+.empty-state {
+  text-align: center;
+  padding: var(--space-16) var(--space-6);
+  background-color: var(--color-surface);
+  border: 2px dashed var(--color-border);
+  border-radius: var(--radius-xl);
+  max-width: 560px;
+  margin: 0 auto;
+}
+
+.empty-state-icon {
+  width: 64px;
+  height: 64px;
+  border-radius: 50%;
+  background-color: var(--color-cream);
+  color: var(--color-text-muted);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto var(--space-4) auto;
+}
+
+.empty-state-title {
+  font-size: 1.35rem;
+  margin-bottom: var(--space-2);
+}
+
+.empty-state-text {
+  font-size: 0.95rem;
+  color: var(--color-text-secondary);
+  margin-bottom: var(--space-6);
+}
+
+/* ==========================================================================
+   Responsive Breakpoints for Components
+   ========================================================================== */
+
+@media (max-width: 900px) {
+  .filter-main-row {
+    grid-template-columns: 1fr;
+  }
+  
+  .weather-current {
+    grid-template-columns: 1fr;
+    gap: var(--space-6);
+  }
+
+  .weather-stats-grid {
+    grid-template-columns: 1fr;
+  }
+}

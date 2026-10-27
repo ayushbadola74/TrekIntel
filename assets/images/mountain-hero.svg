@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600" width="100%" height="100%">
+  <defs>
+    <linearGradient id="skyGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#0B1A13"/>
+      <stop offset="50%" stop-color="#163829"/>
+      <stop offset="100%" stop-color="#244E3B"/>
+    </linearGradient>
+    <linearGradient id="peakGrad1" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#F2F6F3"/>
+      <stop offset="30%" stop-color="#B7CCC0"/>
+      <stop offset="100%" stop-color="#1C382C"/>
+    </linearGradient>
+    <linearGradient id="peakGrad2" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#E1EBE4"/>
+      <stop offset="40%" stop-color="#8FA89A"/>
+      <stop offset="100%" stop-color="#12251D"/>
+    </linearGradient>
+    <linearGradient id="peakGrad3" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="25%" stop-color="#CBE0D4"/>
+      <stop offset="100%" stop-color="#0E1E17"/>
+    </linearGradient>
+    <linearGradient id="pineGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#142B20"/>
+      <stop offset="100%" stop-color="#0A1610"/>
+    </linearGradient>
+  </defs>
+  <!-- Atmospheric Sky -->
+  <rect width="1200" height="600" fill="url(#skyGrad)"/>
+
+  <!-- Morning Sun Glow -->
+  <circle cx="850" cy="220" r="140" fill="#C4EF91" opacity="0.25" filter="blur(40px)"/>
+  <circle cx="850" cy="220" r="80" fill="#FFFBE6" opacity="0.4" filter="blur(20px)"/>
+
+  <!-- Distant Himalayan Ridge (Swargarohini / Gangotri Group) -->
+  <polygon points="0,480 180,320 340,410 520,260 710,380 940,210 1120,330 1200,280 1200,600 0,600" fill="url(#peakGrad1)" opacity="0.6"/>
+
+  <!-- Middle Himalayan Snow Peaks -->
+  <polygon points="0,520 120,380 280,470 460,290 620,440 820,240 1020,410 1200,340 1200,600 0,600" fill="url(#peakGrad2)" opacity="0.85"/>
+
+  <!-- Foreground High Peak (Kedarkantha / Trishul) -->
+  <polygon points="150,600 380,240 430,280 620,600" fill="url(#peakGrad3)"/>
+  <polygon points="380,240 430,280 620,600 380,600" fill="#0D1F17" opacity="0.5"/>
+  <polygon points="680,600 890,260 940,310 1150,600" fill="url(#peakGrad3)"/>
+  <polygon points="890,260 940,310 1150,600 890,600" fill="#0D1F17" opacity="0.55"/>
+
+  <!-- Alpine Pine Tree Silhouette Strip -->
+  <path d="M0,560 Q300,530 600,550 T1200,540 L1200,600 L0,600 Z" fill="url(#pineGrad)"/>
+</svg>

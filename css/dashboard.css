@@ -1,0 +1,312 @@
+/* ==========================================================================
+   TrekIntel — Dashboard, My Treks, Manage Trek & Profile Stylesheet
+   ========================================================================== */
+
+.dashboard-layout {
+  padding-top: var(--space-8);
+  padding-bottom: var(--space-16);
+}
+
+/* Dashboard Hero Banner */
+.dashboard-hero {
+  background: linear-gradient(135deg, var(--color-primary-dark) 0%, #163628 100%);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-8) var(--space-10);
+  color: var(--color-text-inverse);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-8);
+  box-shadow: var(--shadow-lg);
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--color-border-dark);
+}
+
+.dashboard-hero::before {
+  content: '';
+  position: absolute;
+  right: -50px;
+  bottom: -50px;
+  width: 300px;
+  height: 300px;
+  background: radial-gradient(circle, rgba(196, 239, 145, 0.15) 0%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+}
+
+.dashboard-greeting-block {
+  position: relative;
+  z-index: 2;
+}
+
+.dashboard-welcome-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-size: 0.8rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--color-accent);
+  background: rgba(196, 239, 145, 0.12);
+  padding: 4px 12px;
+  border-radius: var(--radius-full);
+  margin-bottom: var(--space-3);
+}
+
+.dashboard-title {
+  color: #FFFFFF;
+  font-size: 2.1rem;
+  margin-bottom: var(--space-2);
+}
+
+.dashboard-subtitle {
+  color: #B4C4B9;
+  font-size: 1rem;
+  max-width: 540px;
+}
+
+.dashboard-quick-actions {
+  display: flex;
+  gap: var(--space-3);
+  position: relative;
+  z-index: 2;
+  flex-wrap: wrap;
+}
+
+/* Stats Metrics Cards Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: var(--space-6);
+  margin-bottom: var(--space-10);
+}
+
+.stat-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-6);
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  align-items: center;
+  gap: var(--space-4);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.stat-card:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-md);
+  border-color: var(--color-border-hover);
+}
+
+.stat-icon-wrapper {
+  width: 52px;
+  height: 52px;
+  border-radius: var(--radius-lg);
+  background: var(--color-primary-subtle);
+  color: var(--color-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.stat-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.stat-number {
+  font-family: var(--font-heading);
+  font-size: 1.85rem;
+  font-weight: 800;
+  color: var(--color-primary-dark);
+  line-height: 1.1;
+}
+
+.stat-title {
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-text-secondary);
+  margin-top: 2px;
+}
+
+/* Section Card Container */
+.dashboard-card {
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: var(--space-8);
+  box-shadow: var(--shadow-sm);
+  margin-bottom: var(--space-8);
+}
+
+.dashboard-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.dashboard-card-title {
+  font-size: 1.35rem;
+  color: var(--color-primary-dark);
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+/* Manage Trek Form */
+.trek-form-card {
+  max-width: 860px;
+  margin: 0 auto;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-10);
+  box-shadow: var(--shadow-md);
+}
+
+.form-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-5);
+}
+
+.form-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: var(--space-5);
+}
+
+.preset-pills-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.preset-pill {
+  font-size: 0.775rem;
+  font-weight: 600;
+  font-family: var(--font-heading);
+  padding: 4px 10px;
+  background-color: var(--color-cream);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  color: var(--color-text-secondary);
+  transition: all var(--transition-fast);
+}
+
+.preset-pill:hover {
+  background-color: var(--color-primary-subtle);
+  color: var(--color-primary);
+  border-color: var(--color-primary-light);
+}
+
+/* Visibility Switch */
+.switch-container {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  padding: var(--space-3) var(--space-4);
+  background-color: var(--color-cream);
+  border-radius: var(--radius-md);
+  border: 1px solid var(--color-border);
+  margin-top: var(--space-2);
+}
+
+.switch-label {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--color-primary-dark);
+}
+
+.switch-desc {
+  font-size: 0.8rem;
+  color: var(--color-text-secondary);
+}
+
+/* Profile View */
+.profile-card {
+  max-width: 680px;
+  margin: 0 auto;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-2xl);
+  padding: var(--space-10);
+  box-shadow: var(--shadow-md);
+}
+
+.profile-avatar-header {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6);
+  padding-bottom: var(--space-8);
+  margin-bottom: var(--space-8);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.profile-avatar-large {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--color-primary) 0%, var(--color-primary-light) 100%);
+  color: var(--color-accent);
+  font-family: var(--font-heading);
+  font-size: 2rem;
+  font-weight: 800;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 12px rgba(23, 61, 45, 0.2);
+}
+
+.profile-details-top h3 {
+  font-size: 1.5rem;
+  margin-bottom: 4px;
+}
+
+.profile-email-badge {
+  color: var(--color-text-secondary);
+  font-size: 0.925rem;
+}
+
+.profile-meta-info {
+  display: flex;
+  gap: var(--space-4);
+  margin-top: var(--space-2);
+  font-size: 0.825rem;
+  color: var(--color-text-muted);
+}
+
+/* Responsive */
+@media (max-width: 900px) {
+  .dashboard-hero {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-6);
+    padding: var(--space-6);
+  }
+
+  .form-grid-2,
+  .form-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .trek-form-card,
+  .profile-card {
+    padding: var(--space-6);
+  }
+
+  .profile-avatar-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-4);
+  }
+}

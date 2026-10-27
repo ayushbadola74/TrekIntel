@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manage Trek — TrekIntel</title>
+  <meta name="description" content="Add or edit your Himalayan trekking route records, coordinates, elevations, and visibility settings.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Manrope:wght@300..800&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="TrekIntel Home">
+        <div class="brand-icon">
+          <i data-lucide="mountain" style="width: 20px; height: 20px;"></i>
+        </div>
+        <span class="brand-text">Trek<span>Intel</span></span>
+      </a>
+
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="explore.html" class="nav-link">Explore Treks</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <a href="my-treks.html" class="nav-link active">My Treks</a>
+        <a href="favorites.html" class="nav-link">Saved</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div id="nav-auth-actions" style="display: flex; align-items: center; gap: var(--space-3);">
+          <!-- Dynamic Auth populated by auth.js -->
+        </div>
+
+        <button class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+          <i data-lucide="menu" style="width: 24px; height: 24px;"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="section section-cream" style="padding-top: var(--space-10); padding-bottom: var(--space-16);">
+    <div class="container container-narrow">
+
+      <!-- Form Card -->
+      <div class="trek-form-card">
+        <div style="margin-bottom: var(--space-8); padding-bottom: var(--space-4); border-bottom: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4);">
+          <div>
+            <span class="eyebrow">Trailhead Entry</span>
+            <h1 id="manage-trek-page-title" style="font-size: 1.85rem; margin-bottom: 4px;">Log New Himalayan Trek</h1>
+            <p style="font-size: 0.925rem; color: var(--color-text-secondary); margin-bottom: 0;">
+              Record high-altitude routes, coordinates, and essential expedition logistics.
+            </p>
+          </div>
+          <a href="my-treks.html" class="btn btn-secondary btn-sm">
+            <i data-lucide="arrow-left" style="width: 15px; height: 15px;"></i>
+            <span>Cancel</span>
+          </a>
+        </div>
+
+        <!-- Quick Autofill Presets -->
+        <div style="background-color: var(--color-surface-alt); border: 1px dashed var(--color-border); border-radius: var(--radius-lg); padding: var(--space-4); margin-bottom: var(--space-6);">
+          <div style="display: flex; align-items: center; gap: var(--space-2); font-size: 0.825rem; font-weight: 700; color: var(--color-primary); margin-bottom: var(--space-2);">
+            <i data-lucide="zap" style="width: 14px; height: 14px;"></i>
+            <span>Quick Autofill Landmark Presets (Uttarakhand):</span>
+          </div>
+          <div id="coordinate-presets-container" class="preset-pills-row"></div>
+        </div>
+
+        <!-- Form -->
+        <form id="manage-trek-form" novalidate>
+          <div class="form-group">
+            <label class="form-label" for="trek-name">Trek Name *</label>
+            <input type="text" id="trek-name" class="form-input" placeholder="e.g. Kedarkantha Summit Expedition" required />
+            <div class="form-hint">Enter the full destination or peak name.</div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="trek-location">Location / Trailhead Basecamp *</label>
+            <input type="text" id="trek-location" class="form-input" placeholder="e.g. Sankri, Uttarkashi, Uttarakhand" required />
+            <div class="form-hint">Specify the starting village, district, and state.</div>
+          </div>
+
+          <div class="form-grid-3">
+            <div class="form-group">
+              <label class="form-label" for="trek-difficulty">Difficulty Grade *</label>
+              <select id="trek-difficulty" class="form-select" required>
+                <option value="Easy">Easy (Beginner)</option>
+                <option value="Moderate" selected>Moderate</option>
+                <option value="Difficult">Difficult</option>
+                <option value="Expert">Expert Mountaineering</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="trek-duration">Duration (Days) *</label>
+              <input type="number" id="trek-duration" class="form-input" min="1" max="60" placeholder="e.g. 6" required />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="trek-altitude">
+                <span>Peak Altitude (m)</span>
+                <span class="optional">(Optional)</span>
+              </label>
+              <input type="number" id="trek-altitude" class="form-input" min="200" max="8848" placeholder="e.g. 3810" />
+            </div>
+          </div>
+
+          <!-- Coordinates Grid -->
+          <div class="form-grid-2">
+            <div class="form-group">
+              <label class="form-label" for="trek-latitude">
+                <span>Latitude (°N)</span>
+                <span class="optional">(For live weather & map)</span>
+              </label>
+              <input type="number" step="0.0001" id="trek-latitude" class="form-input" placeholder="e.g. 31.0234" />
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="trek-longitude">
+                <span>Longitude (°E)</span>
+                <span class="optional">(For live weather & map)</span>
+              </label>
+              <input type="number" step="0.0001" id="trek-longitude" class="form-input" placeholder="e.g. 78.1725" />
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label" for="trek-description">Expedition Description & Trail Notes</label>
+            <textarea id="trek-description" rows="5" class="form-textarea" placeholder="Detail the terrain, seasonal weather windows, landmarks, campsites, water sources, and essential hazards..."></textarea>
+          </div>
+
+          <!-- Cover Image URL -->
+          <div class="form-group">
+            <label class="form-label" for="trek-image-url">
+              <span>Cover Photograph URL</span>
+              <span class="optional">(Optional image link)</span>
+            </label>
+            <input type="url" id="trek-image-url" class="form-input" placeholder="https://images.unsplash.com/..." />
+
+            <div style="margin-top: var(--space-2);">
+              <span style="font-size: 0.775rem; color: var(--color-text-muted); font-weight: 600;">Or select an authentic Himalayan preset photo:</span>
+              <div id="image-presets-container" style="display: flex; gap: var(--space-2); margin-top: 6px;"></div>
+            </div>
+
+            <div style="margin-top: var(--space-3);">
+              <img id="image-preview-thumbnail" src="" alt="Cover Preview" style="display: none; width: 100%; height: 180px; object-fit: cover; border-radius: var(--radius-md); border: 1px solid var(--color-border);" />
+            </div>
+          </div>
+
+          <!-- Visibility Switch -->
+          <div class="form-group">
+            <label class="switch-container">
+              <input type="checkbox" id="trek-visibility" checked style="width: 20px; height: 20px; accent-color: var(--color-primary);" />
+              <div>
+                <div class="switch-label">Public Himalayan Route</div>
+                <div class="switch-desc">Make this trek visible to fellow explorers in the public explore directory. Uncheck to keep it private to your account.</div>
+              </div>
+            </label>
+          </div>
+
+          <div style="display: flex; justify-content: flex-end; gap: var(--space-4); margin-top: var(--space-8); padding-top: var(--space-6); border-top: 1px solid var(--color-border);">
+            <a href="my-treks.html" class="btn btn-secondary">Cancel</a>
+            <button type="submit" id="submit-trek-btn" class="btn btn-primary btn-lg">
+              <span>Save Trekking Record</span>
+              <i data-lucide="check" style="width: 18px; height: 18px;"></i>
+            </button>
+          </div>
+        </form>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand-logo" style="color: #FFFFFF;">
+            <div class="brand-icon">
+              <i data-lucide="mountain" style="width: 20px; height: 20px;"></i>
+            </div>
+            <span class="brand-text">Trek<span>Intel</span></span>
+          </a>
+          <p>
+            An open Himalayan trekking intelligence platform committed to responsible exploration, accurate trail telemetry, and Leave No Trace ethics across Uttarakhand and beyond.
+          </p>
+          <div style="display: flex; gap: var(--space-3); color: #8E9F94;">
+            <button type="button" class="btn btn-sm btn-dark open-supabase-config-btn" style="font-size: 0.775rem; padding: 4px 10px;">
+              <i data-lucide="database" style="width: 14px; height: 14px;"></i>
+              <span>Supabase Status / Config</span>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="index.html" class="footer-link">Home</a></li>
+            <li><a href="explore.html" class="footer-link">Explore Treks</a></li>
+            <li><a href="dashboard.html" class="footer-link">Trekker Dashboard</a></li>
+            <li><a href="my-treks.html" class="footer-link">My Expeditions</a></li>
+            <li><a href="favorites.html" class="footer-link">Saved Favourites</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Iconic Trails</h4>
+          <ul class="footer-links">
+            <li><a href="trek-details.html?id=kedarkantha-summit" class="footer-link">Kedarkantha Summit</a></li>
+            <li><a href="trek-details.html?id=dayara-bugyal" class="footer-link">Dayara Bugyal</a></li>
+            <li><a href="trek-details.html?id=har-ki-dun" class="footer-link">Har Ki Dun Valley</a></li>
+            <li><a href="trek-details.html?id=valley-of-flowers" class="footer-link">Valley of Flowers</a></li>
+            <li><a href="trek-details.html?id=chopta-chandrashila" class="footer-link">Chopta Chandrashila</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Safety & Environment</h4>
+          <div class="footer-disclaimer-box">
+            <strong>Leave No Trace:</strong> The Himalayas are fragile high-altitude ecosystems. Never litter, avoid single-use plastics, and respect local sacred forests and mountain customs. Weather forecasts are predictive guides, not safety guarantees.
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 TrekIntel — Himalayan Trekking Intelligence Platform. All rights reserved.</div>
+        <div style="display: flex; gap: var(--space-4);">
+          <span>Telemetry via Open-Meteo</span>
+          <span>&bull;</span>
+          <span>Maps via OpenStreetMap</span>
+          <span>&bull;</span>
+          <span>Auth & DB via Supabase</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="../js/main.js"></script>
+  <script type="module" src="../js/manage-trek.js"></script>
+</body>
+</html>

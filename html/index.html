@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TrekIntel — Himalayan Trekking Intelligence Platform</title>
+  <meta name="description" content="Discover curated Himalayan treks, Uttarakhand high-altitude trails, real-time Open-Meteo weather forecasts, and elevation intelligence.">
+
+  <!-- Fonts: Manrope & DM Sans -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Manrope:wght@300..800&display=swap" rel="stylesheet">
+
+  <!-- Core CSS -->
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Lucide Icons CDN -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="TrekIntel Home">
+        <div class="brand-icon">
+          <i data-lucide="mountain" style="width: 20px; height: 20px;"></i>
+        </div>
+        <span class="brand-text">Trek<span>Intel</span></span>
+      </a>
+
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <a href="index.html" class="nav-link active">Home</a>
+        <a href="explore.html" class="nav-link">Explore Treks</a>
+        <a href="#why-trekintel" class="nav-link">Why TrekIntel</a>
+        <a href="#weather-insights" class="nav-link">Weather</a>
+        <a href="#how-it-works" class="nav-link">How It Works</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div id="nav-auth-actions" style="display: flex; align-items: center; gap: var(--space-3);">
+          <!-- Dynamic auth state populated by auth.js -->
+          <a href="login.html" class="btn btn-ghost btn-sm">Login</a>
+          <a href="signup.html" class="btn btn-primary btn-sm">Get Started</a>
+        </div>
+
+        <button class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+          <i data-lucide="menu" style="width: 24px; height: 24px;"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero-section" style="position: relative; min-height: 85vh; display: flex; align-items: center; justify-content: center; background-color: var(--color-primary-dark); overflow: hidden; padding: var(--space-20) 0;">
+    <!-- Cinematic Mountain Background -->
+    <div style="position: absolute; inset: 0; z-index: 1;">
+      <img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=2000&q=85" alt="Himalayan mountain peaks at sunrise" style="width: 100%; height: 100%; object-fit: cover; opacity: 0.55; filter: saturate(1.15);" />
+      <div style="position: absolute; inset: 0; background: linear-gradient(180deg, rgba(16, 32, 25, 0.45) 0%, rgba(16, 32, 25, 0.9) 100%);"></div>
+    </div>
+
+    <div class="container" style="position: relative; z-index: 2; text-align: center; max-width: 860px;">
+      <span class="eyebrow" style="background: rgba(196, 239, 145, 0.15); color: var(--color-accent); border: 1px solid rgba(196, 239, 145, 0.3);">
+        <i data-lucide="compass" style="width: 14px; height: 14px;"></i>
+        Himalayan Trekking Intelligence Platform
+      </span>
+
+      <h1 style="color: #FFFFFF; font-size: clamp(2.5rem, 6vw, 4.2rem); font-weight: 800; line-height: 1.15; margin-bottom: var(--space-5); letter-spacing: -0.03em;">
+        Find Your Next <br><span style="color: var(--color-accent);">Great Escape.</span>
+      </h1>
+
+      <p style="color: #D3E0D7; font-size: clamp(1.05rem, 2vw, 1.25rem); line-height: 1.6; margin: 0 auto var(--space-8) auto; max-width: 680px;">
+        Explore authentic trails across Uttarakhand and the higher Himalayas. Powered by real-time Open-Meteo atmospheric forecasts, verified geospatial coordinates, and curated expedition data.
+      </p>
+
+      <div style="display: flex; align-items: center; justify-content: center; gap: var(--space-4); flex-wrap: wrap; margin-bottom: var(--space-12);">
+        <a href="explore.html" class="btn btn-accent btn-lg" style="font-size: 1rem; padding: 0.95rem 2rem;">
+          <i data-lucide="compass" style="width: 18px; height: 18px;"></i>
+          <span>Explore Treks</span>
+        </a>
+        <a href="#why-trekintel" class="btn btn-secondary btn-lg" style="backdrop-filter: blur(8px); background: rgba(255, 255, 255, 0.15); color: #FFFFFF; border-color: rgba(255, 255, 255, 0.25);">
+          <span>Discover TrekIntel</span>
+          <i data-lucide="arrow-down" style="width: 18px; height: 18px;"></i>
+        </a>
+      </div>
+
+      <!-- Compact Statistics Strip -->
+      <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-4); background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(12px); border: 1px solid rgba(255, 255, 255, 0.12); border-radius: var(--radius-xl); padding: var(--space-5) var(--space-6);" class="stats-strip">
+        <div>
+          <div style="font-family: var(--font-heading); font-size: 1.6rem; font-weight: 800; color: #FFFFFF;">4,800m</div>
+          <div style="font-size: 0.75rem; color: #A0B2A4; text-transform: uppercase; letter-spacing: 0.05em;">Peak Elevation</div>
+        </div>
+        <div>
+          <div style="font-family: var(--font-heading); font-size: 1.6rem; font-weight: 800; color: var(--color-accent);">8+</div>
+          <div style="font-size: 0.75rem; color: #A0B2A4; text-transform: uppercase; letter-spacing: 0.05em;">Curated Routes</div>
+        </div>
+        <div>
+          <div style="font-family: var(--font-heading); font-size: 1.6rem; font-weight: 800; color: #FFFFFF;">Live</div>
+          <div style="font-size: 0.75rem; color: #A0B2A4; text-transform: uppercase; letter-spacing: 0.05em;">Weather Radar</div>
+        </div>
+        <div>
+          <div style="font-family: var(--font-heading); font-size: 1.6rem; font-weight: 800; color: var(--color-accent);">100%</div>
+          <div style="font-size: 0.75rem; color: #A0B2A4; text-transform: uppercase; letter-spacing: 0.05em;">Open & Free</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 1: Featured Treks -->
+  <section class="section section-cream" id="featured-treks">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: flex-end; margin-bottom: var(--space-10); flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <span class="eyebrow">Curated Expeditions</span>
+          <h2 class="section-title">Iconic Himalayan Routes</h2>
+          <p class="section-subtitle">Handpicked Uttarakhand classics with verified elevations and live conditions.</p>
+        </div>
+        <a href="explore.html" class="btn btn-secondary btn-sm">
+          <span>View All Treks</span>
+          <i data-lucide="arrow-right" style="width: 16px; height: 16px;"></i>
+        </a>
+      </div>
+
+      <!-- Featured Grid -->
+      <div class="trek-grid">
+        <!-- Card 1: Kedarkantha -->
+        <div class="trek-card">
+          <div class="trek-card-media">
+            <img src="https://images.unsplash.com/photo-1544735716-392fe2489ffa?auto=format&fit=crop&w=800&q=80" alt="Kedarkantha Summit" class="trek-card-img" />
+            <div class="trek-card-overlay"></div>
+            <div class="trek-card-top-badges">
+              <span class="badge badge-moderate">Moderate</span>
+              <span class="badge badge-neutral" style="background: rgba(255,255,255,0.85);">Winter Snow Peak</span>
+            </div>
+          </div>
+          <div class="trek-card-body">
+            <div class="trek-card-location">
+              <i data-lucide="map-pin" style="width: 14px; height: 14px;"></i>
+              <span>Sankri, Uttarkashi, Uttarakhand</span>
+            </div>
+            <h3 class="trek-card-title"><a href="trek-details.html?id=kedarkantha-summit">Kedarkantha Summit Trek</a></h3>
+            <p class="trek-card-desc">Famous for its 360-degree summit sunrise, frozen Juda Ka Talab lake, and towering views of Swargarohini and Bandarpoonch.</p>
+            <div class="trek-card-stats">
+              <div class="card-stat-item">
+                <div class="card-stat-icon"><i data-lucide="mountain" style="width: 16px; height: 16px;"></i></div>
+                <div class="card-stat-info">
+                  <span class="card-stat-label">Altitude</span>
+                  <span class="card-stat-val">3,810 m</span>
+                </div>
+              </div>
+              <div class="card-stat-item">
+                <div class="card-stat-icon"><i data-lucide="clock" style="width: 16px; height: 16px;"></i></div>
+                <div class="card-stat-info">
+                  <span class="card-stat-label">Duration</span>
+                  <span class="card-stat-val">6 Days</span>
+                </div>
+              </div>
+            </div>
+            <div class="trek-card-footer">
+              <a href="trek-details.html?id=kedarkantha-summit" class="btn btn-secondary btn-sm" style="width: 100%;">
+                <span>View Trail Details</span>
+                <i data-lucide="arrow-right" style="width: 15px; height: 15px;"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 2: Dayara Bugyal -->
+        <div class="trek-card">
+          <div class="trek-card-media">
+            <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=800&q=80" alt="Dayara Bugyal" class="trek-card-img" />
+            <div class="trek-card-overlay"></div>
+            <div class="trek-card-top-badges">
+              <span class="badge badge-easy">Easy</span>
+              <span class="badge badge-neutral" style="background: rgba(255,255,255,0.85);">Alpine Meadow</span>
+            </div>
+          </div>
+          <div class="trek-card-body">
+            <div class="trek-card-location">
+              <i data-lucide="map-pin" style="width: 14px; height: 14px;"></i>
+              <span>Barsu, Uttarkashi, Uttarakhand</span>
+            </div>
+            <h3 class="trek-card-title"><a href="trek-details.html?id=dayara-bugyal">Dayara Bugyal Alpine Meadow</a></h3>
+            <p class="trek-card-desc">Expansive 28 sq km rolling alpine meadows offering unobstructed vantage points of the Gangotri and Bhagirathi peaks.</p>
+            <div class="trek-card-stats">
+              <div class="card-stat-item">
+                <div class="card-stat-icon"><i data-lucide="mountain" style="width: 16px; height: 16px;"></i></div>
+                <div class="card-stat-info">
+                  <span class="card-stat-label">Altitude</span>
+                  <span class="card-stat-val">3,750 m</span>
+                </div>
+              </div>
+              <div class="card-stat-item">
+                <div class="card-stat-icon"><i data-lucide="clock" style="width: 16px; height: 16px;"></i></div>
+                <div class="card-stat-info">
+                  <span class="card-stat-label">Duration</span>
+                  <span class="card-stat-val">4 Days</span>
+                </div>
+              </div>
+            </div>
+            <div class="trek-card-footer">
+              <a href="trek-details.html?id=dayara-bugyal" class="btn btn-secondary btn-sm" style="width: 100%;">
+                <span>View Trail Details</span>
+                <i data-lucide="arrow-right" style="width: 15px; height: 15px;"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Card 3: Valley of Flowers -->
+        <div class="trek-card">
+          <div class="trek-card-media">
+            <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=800&q=80" alt="Valley of Flowers" class="trek-card-img" />
+            <div class="trek-card-overlay"></div>
+            <div class="trek-card-top-badges">
+              <span class="badge badge-moderate">Moderate</span>
+              <span class="badge badge-neutral" style="background: rgba(255,255,255,0.85);">UNESCO Heritage</span>
+            </div>
+          </div>
+          <div class="trek-card-body">
+            <div class="trek-card-location">
+              <i data-lucide="map-pin" style="width: 14px; height: 14px;"></i>
+              <span>Govindghat, Chamoli, Uttarakhand</span>
+            </div>
+            <h3 class="trek-card-title"><a href="trek-details.html?id=valley-of-flowers">Valley of Flowers & Hemkund</a></h3>
+            <p class="trek-card-desc">UNESCO World Heritage sanctuary featuring 500+ wild Himalayan blossom varieties and glacial lake Hemkund Sahib.</p>
+            <div class="trek-card-stats">
+              <div class="card-stat-item">
+                <div class="card-stat-icon"><i data-lucide="mountain" style="width: 16px; height: 16px;"></i></div>
+                <div class="card-stat-info">
+                  <span class="card-stat-label">Altitude</span>
+                  <span class="card-stat-val">4,300 m</span>
+                </div>
+              </div>
+              <div class="card-stat-item">
+                <div class="card-stat-icon"><i data-lucide="clock" style="width: 16px; height: 16px;"></i></div>
+                <div class="card-stat-info">
+                  <span class="card-stat-label">Duration</span>
+                  <span class="card-stat-val">6 Days</span>
+                </div>
+              </div>
+            </div>
+            <div class="trek-card-footer">
+              <a href="trek-details.html?id=valley-of-flowers" class="btn btn-secondary btn-sm" style="width: 100%;">
+                <span>View Trail Details</span>
+                <i data-lucide="arrow-right" style="width: 15px; height: 15px;"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 2: Explore by Difficulty -->
+  <section class="section section-white">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Tailored For Your Fitness</span>
+        <h2 class="section-title">Explore by Difficulty Grade</h2>
+        <p class="section-subtitle">Whether embarking on your first Himalayan ascent or testing your mountaineering grit.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: var(--space-6);">
+        <!-- Easy -->
+        <a href="explore.html?difficulty=easy" class="stat-card" style="text-decoration: none; padding: var(--space-8); display: flex; flex-direction: column; align-items: flex-start;">
+          <div style="width: 44px; height: 44px; border-radius: var(--radius-md); background: #E8F5E9; color: #1E6638; display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-4);">
+            <i data-lucide="smile" style="width: 22px; height: 22px;"></i>
+          </div>
+          <span class="badge badge-easy" style="margin-bottom: var(--space-2);">Easy / Beginner</span>
+          <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2); color: var(--color-primary-dark);">Gentle Mountain Trails</h3>
+          <p style="font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: var(--space-4);">
+            Ideal for beginners and families. Well-defined trails under 3,800m with moderate elevation gain like Nag Tibba and Dayara Bugyal.
+          </p>
+          <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-primary); display: flex; align-items: center; gap: 4px; margin-top: auto;">
+            Explore Easy Treks <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+          </span>
+        </a>
+
+        <!-- Moderate -->
+        <a href="explore.html?difficulty=moderate" class="stat-card" style="text-decoration: none; padding: var(--space-8); display: flex; flex-direction: column; align-items: flex-start;">
+          <div style="width: 44px; height: 44px; border-radius: var(--radius-md); background: #FFF3E0; color: #B35C00; display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-4);">
+            <i data-lucide="trending-up" style="width: 22px; height: 22px;"></i>
+          </div>
+          <span class="badge badge-moderate" style="margin-bottom: var(--space-2);">Moderate</span>
+          <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2); color: var(--color-primary-dark);">Alpine Pass Crossings</h3>
+          <p style="font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: var(--space-4);">
+            Demands good cardio conditioning. Involves sustained climbing, rocky ridges, and snow sections up to 4,300m like Har Ki Dun and Kuari Pass.
+          </p>
+          <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-primary); display: flex; align-items: center; gap: 4px; margin-top: auto;">
+            Explore Moderate Treks <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+          </span>
+        </a>
+
+        <!-- Difficult -->
+        <a href="explore.html?difficulty=difficult" class="stat-card" style="text-decoration: none; padding: var(--space-8); display: flex; flex-direction: column; align-items: flex-start;">
+          <div style="width: 44px; height: 44px; border-radius: var(--radius-md); background: #FDEDEC; color: #B03A2E; display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-4);">
+            <i data-lucide="zap" style="width: 22px; height: 22px;"></i>
+          </div>
+          <span class="badge badge-difficult" style="margin-bottom: var(--space-2);">Difficult / High-Altitude</span>
+          <h3 style="font-size: 1.25rem; margin-bottom: var(--space-2); color: var(--color-primary-dark);">Expedition Glaciers</h3>
+          <p style="font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: var(--space-4);">
+            For seasoned high-altitude trekkers. Moraine walking, glacial streams, steep ice crests exceeding 4,800m like Roopkund.
+          </p>
+          <span style="font-size: 0.85rem; font-weight: 700; color: var(--color-primary); display: flex; align-items: center; gap: 4px; margin-top: auto;">
+            Explore Difficult Treks <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+          </span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 3: Why TrekIntel? -->
+  <section class="section section-cream" id="why-trekintel">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: var(--space-12); align-items: center;" class="why-grid">
+        <div>
+          <span class="eyebrow">The TrekIntel Difference</span>
+          <h2 class="section-title">Intelligence Built For Serious Trekkers.</h2>
+          <p class="section-subtitle" style="margin-bottom: var(--space-6);">
+            Most adventure websites are crowded commercial booking portals. TrekIntel is designed as an open intelligence workbench focused on Himalayan topography, meteorological safety, and personal trail management.
+          </p>
+
+          <div style="display: flex; flex-direction: column; gap: var(--space-4);">
+            <div style="display: flex; gap: var(--space-4);">
+              <div class="stat-icon-wrapper" style="width: 44px; height: 44px;"><i data-lucide="cloud-rain"></i></div>
+              <div>
+                <h4 style="font-size: 1.05rem; margin-bottom: 2px;">Real-Time Atmospheric Forecasts</h4>
+                <p style="font-size: 0.875rem;">Live temperature, wind shear, and precipitation fetched directly from high-resolution Open-Meteo weather models.</p>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: var(--space-4);">
+              <div class="stat-icon-wrapper" style="width: 44px; height: 44px;"><i data-lucide="map"></i></div>
+              <div>
+                <h4 style="font-size: 1.05rem; margin-bottom: 2px;">Verified Geospatial Markers</h4>
+                <p style="font-size: 0.875rem;">Interactive OpenStreetMap Leaflet layers pinpointing trailheads, base camps, and peak coordinates with zero guess work.</p>
+              </div>
+            </div>
+
+            <div style="display: flex; gap: var(--space-4);">
+              <div class="stat-icon-wrapper" style="width: 44px; height: 44px;"><i data-lucide="shield-check"></i></div>
+              <div>
+                <h4 style="font-size: 1.05rem; margin-bottom: 2px;">Private & Cloud-Synchronized Records</h4>
+                <p style="font-size: 0.875rem;">Create, track, and bookmark your Himalayan journeys with Supabase authentication and Row Level Security.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div style="position: relative;">
+          <div style="border-radius: var(--radius-2xl); overflow: hidden; box-shadow: var(--shadow-xl); border: 1px solid var(--color-border);">
+            <img src="https://images.unsplash.com/photo-1506744038136-46273834b3fb?auto=format&fit=crop&w=1200&q=80" alt="Himalayan mountain explorer" style="width: 100%; height: 480px; object-fit: cover;" />
+          </div>
+          <div style="position: absolute; bottom: -20px; left: -20px; background: var(--color-surface); padding: var(--space-5); border-radius: var(--radius-xl); box-shadow: var(--shadow-lg); border: 1px solid var(--color-border); max-width: 240px;" class="floating-stat-box">
+            <div style="display: flex; align-items: center; gap: var(--space-2); margin-bottom: 4px;">
+              <i data-lucide="check-circle" style="color: var(--color-success); width: 18px; height: 18px;"></i>
+              <span style="font-weight: 700; font-size: 0.9rem;">Clean & Ad-Free</span>
+            </div>
+            <p style="font-size: 0.775rem; color: var(--color-text-muted); margin-bottom: 0;">No popups, no hidden commercial bias. Pure Himalayan trail intelligence.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 4: Weather Insights Showcase -->
+  <section class="section section-dark" id="weather-insights">
+    <div class="container">
+      <div style="text-align: center; max-width: 680px; margin: 0 auto var(--space-12) auto;">
+        <span class="eyebrow">Atmospheric Telemetry</span>
+        <h2 class="section-title">Plan Smarter With Weather Insights.</h2>
+        <p style="color: #A3B3A9; font-size: 1.05rem;">
+          In the Himalayas, weather is the single most critical factor for expedition success. Our Open-Meteo integration retrieves dynamic high-altitude forecasts before you lace up your boots.
+        </p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-6);" class="weather-feature-cards">
+        <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-xl); padding: var(--space-8);">
+          <div style="width: 44px; height: 44px; border-radius: var(--radius-md); background: rgba(196, 239, 145, 0.15); color: var(--color-accent); display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-4);">
+            <i data-lucide="thermometer-snowflake" style="width: 22px; height: 22px;"></i>
+          </div>
+          <h3 style="color: #FFFFFF; font-size: 1.2rem; margin-bottom: var(--space-2);">Sub-Zero Apparent Temperature</h3>
+          <p style="color: #9EAF9F; font-size: 0.9rem; line-height: 1.6;">
+            Understand the exact 'feels like' chill factor generated by high-altitude winds, so you can pack suitable thermal layers.
+          </p>
+        </div>
+
+        <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-xl); padding: var(--space-8);">
+          <div style="width: 44px; height: 44px; border-radius: var(--radius-md); background: rgba(196, 239, 145, 0.15); color: var(--color-accent); display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-4);">
+            <i data-lucide="wind" style="width: 22px; height: 22px;"></i>
+          </div>
+          <h3 style="color: #FFFFFF; font-size: 1.2rem; margin-bottom: var(--space-2);">Ridge Gale Warnings</h3>
+          <p style="color: #9EAF9F; font-size: 0.9rem; line-height: 1.6;">
+            Monitor wind speeds along exposed Himalayan crests to identify safe summit assault windows and ridge crossings.
+          </p>
+        </div>
+
+        <div style="background: rgba(255, 255, 255, 0.04); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: var(--radius-xl); padding: var(--space-8);">
+          <div style="width: 44px; height: 44px; border-radius: var(--radius-md); background: rgba(196, 239, 145, 0.15); color: var(--color-accent); display: flex; align-items: center; justify-content: center; margin-bottom: var(--space-4);">
+            <i data-lucide="calendar" style="width: 22px; height: 22px;"></i>
+          </div>
+          <h3 style="color: #FFFFFF; font-size: 1.2rem; margin-bottom: var(--space-2);">5-Day Multi-Day Trends</h3>
+          <p style="color: #9EAF9F; font-size: 0.9rem; line-height: 1.6;">
+            Track precipitation probability and barometric trends across your entire expedition schedule to avoid being trapped in whiteouts.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 5: How It Works -->
+  <section class="section section-cream" id="how-it-works">
+    <div class="container">
+      <div class="section-header">
+        <span class="eyebrow">Simplicity In Action</span>
+        <h2 class="section-title">How TrekIntel Works</h2>
+        <p class="section-subtitle">Your end-to-end mountain companion from initial research to logging summit victories.</p>
+      </div>
+
+      <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: var(--space-8);" class="how-grid">
+        <div style="background: var(--color-surface); padding: var(--space-8); border-radius: var(--radius-xl); border: 1px solid var(--color-border); text-align: center;">
+          <div style="width: 52px; height: 52px; border-radius: 50%; background: var(--color-primary); color: var(--color-accent); font-family: var(--font-heading); font-size: 1.35rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4) auto;">
+            1
+          </div>
+          <h3 style="font-size: 1.2rem; margin-bottom: var(--space-2);">Discover & Filter</h3>
+          <p style="font-size: 0.9rem; color: var(--color-text-secondary);">
+            Search through Uttarakhand trails based on duration, peak altitude, and physical challenge level.
+          </p>
+        </div>
+
+        <div style="background: var(--color-surface); padding: var(--space-8); border-radius: var(--radius-xl); border: 1px solid var(--color-border); text-align: center;">
+          <div style="width: 52px; height: 52px; border-radius: 50%; background: var(--color-primary); color: var(--color-accent); font-family: var(--font-heading); font-size: 1.35rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4) auto;">
+            2
+          </div>
+          <h3 style="font-size: 1.2rem; margin-bottom: var(--space-2);">Analyze Conditions</h3>
+          <p style="font-size: 0.9rem; color: var(--color-text-secondary);">
+            Check real-time Open-Meteo forecasts, view trailhead markers on Leaflet maps, and review essential gear checkups.
+          </p>
+        </div>
+
+        <div style="background: var(--color-surface); padding: var(--space-8); border-radius: var(--radius-xl); border: 1px solid var(--color-border); text-align: center;">
+          <div style="width: 52px; height: 52px; border-radius: 50%; background: var(--color-primary); color: var(--color-accent); font-family: var(--font-heading); font-size: 1.35rem; font-weight: 800; display: flex; align-items: center; justify-content: center; margin: 0 auto var(--space-4) auto;">
+            3
+          </div>
+          <h3 style="font-size: 1.2rem; margin-bottom: var(--space-2);">Log & Save</h3>
+          <p style="font-size: 0.9rem; color: var(--color-text-secondary);">
+            Save your favourite expeditions or create your own custom trekking logs backed securely by Supabase.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Section 6: CTA Banner -->
+  <section class="section section-dark" style="background: linear-gradient(135deg, #173D2D 0%, #102019 100%);">
+    <div class="container" style="text-align: center; max-width: 720px;">
+      <h2 style="color: #FFFFFF; font-size: clamp(2rem, 4vw, 3rem); margin-bottom: var(--space-4);">
+        Ready to Stand Amongst The Giants?
+      </h2>
+      <p style="color: #D3E0D7; font-size: 1.15rem; margin-bottom: var(--space-8);">
+        Join fellow Himalayan enthusiasts today. Create an account to bookmark your dream routes and log your high-altitude achievements.
+      </p>
+      <div style="display: flex; justify-content: center; gap: var(--space-4); flex-wrap: wrap;">
+        <a href="signup.html" class="btn btn-accent btn-lg">Create Free Account</a>
+        <a href="explore.html" class="btn btn-secondary btn-lg" style="background: rgba(255,255,255,0.1); color: #FFFFFF; border-color: rgba(255,255,255,0.2);">Explore All Treks</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Global Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand-logo" style="color: #FFFFFF;">
+            <div class="brand-icon">
+              <i data-lucide="mountain" style="width: 20px; height: 20px;"></i>
+            </div>
+            <span class="brand-text">Trek<span>Intel</span></span>
+          </a>
+          <p>
+            An open Himalayan trekking intelligence platform committed to responsible exploration, accurate trail telemetry, and Leave No Trace ethics across Uttarakhand and beyond.
+          </p>
+          <div style="display: flex; gap: var(--space-3); color: #8E9F94;">
+            <button type="button" class="btn btn-sm btn-dark open-supabase-config-btn" style="font-size: 0.775rem; padding: 4px 10px;">
+              <i data-lucide="database" style="width: 14px; height: 14px;"></i>
+              <span>Supabase Status / Config</span>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="index.html" class="footer-link">Home</a></li>
+            <li><a href="explore.html" class="footer-link">Explore Treks</a></li>
+            <li><a href="dashboard.html" class="footer-link">Trekker Dashboard</a></li>
+            <li><a href="my-treks.html" class="footer-link">My Expeditions</a></li>
+            <li><a href="favorites.html" class="footer-link">Saved Favourites</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Iconic Trails</h4>
+          <ul class="footer-links">
+            <li><a href="trek-details.html?id=kedarkantha-summit" class="footer-link">Kedarkantha Summit</a></li>
+            <li><a href="trek-details.html?id=dayara-bugyal" class="footer-link">Dayara Bugyal</a></li>
+            <li><a href="trek-details.html?id=har-ki-dun" class="footer-link">Har Ki Dun Valley</a></li>
+            <li><a href="trek-details.html?id=valley-of-flowers" class="footer-link">Valley of Flowers</a></li>
+            <li><a href="trek-details.html?id=chopta-chandrashila" class="footer-link">Chopta Chandrashila</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Safety & Environment</h4>
+          <div class="footer-disclaimer-box">
+            <strong>Leave No Trace:</strong> The Himalayas are fragile high-altitude ecosystems. Never litter, avoid single-use plastics, and respect local sacred forests and mountain customs. Weather forecasts are predictive guides, not safety guarantees.
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 TrekIntel — Himalayan Trekking Intelligence Platform. All rights reserved.</div>
+        <div style="display: flex; gap: var(--space-4);">
+          <span>Telemetry via Open-Meteo</span>
+          <span>&bull;</span>
+          <span>Maps via OpenStreetMap</span>
+          <span>&bull;</span>
+          <span>Auth & DB via Supabase</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="../js/main.js"></script>
+</body>
+</html>

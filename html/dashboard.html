@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Trekker Dashboard — TrekIntel</title>
+  <meta name="description" content="Personalized Himalayan trekking intelligence dashboard. Manage personal routes, review saved favourites, and monitor high-altitude expeditions.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Manrope:wght@300..800&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="TrekIntel Home">
+        <div class="brand-icon">
+          <i data-lucide="mountain" style="width: 20px; height: 20px;"></i>
+        </div>
+        <span class="brand-text">Trek<span>Intel</span></span>
+      </a>
+
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="explore.html" class="nav-link">Explore Treks</a>
+        <a href="dashboard.html" class="nav-link active">Dashboard</a>
+        <a href="my-treks.html" class="nav-link">My Treks</a>
+        <a href="favorites.html" class="nav-link">Saved</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div id="nav-auth-actions" style="display: flex; align-items: center; gap: var(--space-3);">
+          <!-- Dynamic Auth populated by auth.js -->
+        </div>
+
+        <button class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+          <i data-lucide="menu" style="width: 24px; height: 24px;"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Dashboard Main Layout -->
+  <main class="dashboard-layout">
+    <div class="container">
+
+      <!-- Hero Welcome Banner -->
+      <section class="dashboard-hero">
+        <div class="dashboard-greeting-block">
+          <div class="dashboard-welcome-badge">
+            <i data-lucide="compass" style="width: 14px; height: 14px;"></i>
+            <span>Himalayan Expedition Headquarters</span>
+          </div>
+          <h1 class="dashboard-title">
+            Namaste, <span id="dashboard-user-name">Trekker</span>!
+          </h1>
+          <p class="dashboard-subtitle">
+            Welcome to your expedition dashboard. Review real-time conditions, manage your custom mountain trails, and explore curated routes.
+          </p>
+        </div>
+
+        <div class="dashboard-quick-actions">
+          <a href="manage-trek.html" class="btn btn-accent btn-sm">
+            <i data-lucide="plus-circle" style="width: 16px; height: 16px;"></i>
+            <span>Add New Trek</span>
+          </a>
+          <a href="explore.html" class="btn btn-secondary btn-sm" style="background: rgba(255, 255, 255, 0.15); color: #FFFFFF; border-color: rgba(255, 255, 255, 0.25);">
+            <i data-lucide="compass" style="width: 16px; height: 16px;"></i>
+            <span>Explore Routes</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Key Metrics Strip -->
+      <section class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-icon-wrapper">
+            <i data-lucide="map" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div class="stat-content">
+            <span class="stat-number" id="stat-treks-count">0</span>
+            <span class="stat-title">My Logged Treks</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper">
+            <i data-lucide="bookmark" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div class="stat-content">
+            <span class="stat-number" id="stat-favs-count">0</span>
+            <span class="stat-title">Saved Favourites</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper">
+            <i data-lucide="mountain" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div class="stat-content">
+            <span class="stat-number" id="stat-max-alt">3,810 m</span>
+            <span class="stat-title">Peak Altitude Explored</span>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon-wrapper">
+            <i data-lucide="cloud-sun" style="width: 24px; height: 24px;"></i>
+          </div>
+          <div class="stat-content">
+            <span class="stat-number" style="font-size: 1.3rem;">Open-Meteo</span>
+            <span class="stat-title">Active Atmospheric Radar</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- Quick Action Navigation Hub -->
+      <section class="dashboard-card" style="margin-bottom: var(--space-8);">
+        <div class="dashboard-card-header">
+          <h2 class="dashboard-card-title">
+            <i data-lucide="grid" style="width: 20px; height: 20px; color: var(--color-primary);"></i>
+            <span>Expedition Management</span>
+          </h2>
+        </div>
+
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: var(--space-4);">
+          <a href="manage-trek.html" class="btn btn-secondary" style="padding: var(--space-4); display: flex; flex-direction: column; align-items: center; gap: var(--space-2); height: 100px;">
+            <i data-lucide="plus-circle" style="color: var(--color-primary); width: 24px; height: 24px;"></i>
+            <span style="font-size: 0.95rem; font-weight: 700;">Log New Trek</span>
+          </a>
+
+          <a href="my-treks.html" class="btn btn-secondary" style="padding: var(--space-4); display: flex; flex-direction: column; align-items: center; gap: var(--space-2); height: 100px;">
+            <i data-lucide="list" style="color: var(--color-primary); width: 24px; height: 24px;"></i>
+            <span style="font-size: 0.95rem; font-weight: 700;">My Expeditions</span>
+          </a>
+
+          <a href="favorites.html" class="btn btn-secondary" style="padding: var(--space-4); display: flex; flex-direction: column; align-items: center; gap: var(--space-2); height: 100px;">
+            <i data-lucide="bookmark" style="color: var(--color-primary); width: 24px; height: 24px;"></i>
+            <span style="font-size: 0.95rem; font-weight: 700;">Saved Bookmarks</span>
+          </a>
+
+          <a href="profile.html" class="btn btn-secondary" style="padding: var(--space-4); display: flex; flex-direction: column; align-items: center; gap: var(--space-2); height: 100px;">
+            <i data-lucide="user-check" style="color: var(--color-primary); width: 24px; height: 24px;"></i>
+            <span style="font-size: 0.95rem; font-weight: 700;">Profile Settings</span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Recent Records Section -->
+      <section class="dashboard-card">
+        <div class="dashboard-card-header">
+          <h2 class="dashboard-card-title">
+            <i data-lucide="clock" style="width: 20px; height: 20px; color: var(--color-primary);"></i>
+            <span>Recent Trekking Logs</span>
+          </h2>
+          <a href="my-treks.html" class="btn btn-ghost btn-sm">
+            <span>View All</span>
+            <i data-lucide="arrow-right" style="width: 14px; height: 14px;"></i>
+          </a>
+        </div>
+
+        <div id="dashboard-recent-treks" class="trek-grid">
+          <!-- Populated by dashboard.js -->
+        </div>
+      </section>
+
+      <!-- Mountain Advisory Note -->
+      <div class="alert alert-warning" style="margin-top: var(--space-6);">
+        <div class="alert-icon"><i data-lucide="shield-alert"></i></div>
+        <div class="alert-content">
+          <div class="alert-title">High-Altitude Safety Protocol (Uttarakhand State)</div>
+          <div>
+            Always register your ascent with the local Forest Range Post in Uttarkashi, Chamoli, or Rudraprayag. Never trek alone on glaciated trails above 4,000 meters, and adhere strictly to the golden rule of acclimatization: climb high, sleep low.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand-logo" style="color: #FFFFFF;">
+            <div class="brand-icon">
+              <i data-lucide="mountain" style="width: 20px; height: 20px;"></i>
+            </div>
+            <span class="brand-text">Trek<span>Intel</span></span>
+          </a>
+          <p>
+            An open Himalayan trekking intelligence platform committed to responsible exploration, accurate trail telemetry, and Leave No Trace ethics across Uttarakhand and beyond.
+          </p>
+          <div style="display: flex; gap: var(--space-3); color: #8E9F94;">
+            <button type="button" class="btn btn-sm btn-dark open-supabase-config-btn" style="font-size: 0.775rem; padding: 4px 10px;">
+              <i data-lucide="database" style="width: 14px; height: 14px;"></i>
+              <span>Supabase Status / Config</span>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="index.html" class="footer-link">Home</a></li>
+            <li><a href="explore.html" class="footer-link">Explore Treks</a></li>
+            <li><a href="dashboard.html" class="footer-link">Trekker Dashboard</a></li>
+            <li><a href="my-treks.html" class="footer-link">My Expeditions</a></li>
+            <li><a href="favorites.html" class="footer-link">Saved Favourites</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Iconic Trails</h4>
+          <ul class="footer-links">
+            <li><a href="trek-details.html?id=kedarkantha-summit" class="footer-link">Kedarkantha Summit</a></li>
+            <li><a href="trek-details.html?id=dayara-bugyal" class="footer-link">Dayara Bugyal</a></li>
+            <li><a href="trek-details.html?id=har-ki-dun" class="footer-link">Har Ki Dun Valley</a></li>
+            <li><a href="trek-details.html?id=valley-of-flowers" class="footer-link">Valley of Flowers</a></li>
+            <li><a href="trek-details.html?id=chopta-chandrashila" class="footer-link">Chopta Chandrashila</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Safety & Environment</h4>
+          <div class="footer-disclaimer-box">
+            <strong>Leave No Trace:</strong> The Himalayas are fragile high-altitude ecosystems. Never litter, avoid single-use plastics, and respect local sacred forests and mountain customs. Weather forecasts are predictive guides, not safety guarantees.
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 TrekIntel — Himalayan Trekking Intelligence Platform. All rights reserved.</div>
+        <div style="display: flex; gap: var(--space-4);">
+          <span>Telemetry via Open-Meteo</span>
+          <span>&bull;</span>
+          <span>Maps via OpenStreetMap</span>
+          <span>&bull;</span>
+          <span>Auth & DB via Supabase</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="../js/main.js"></script>
+  <script type="module" src="../js/dashboard.js"></script>
+</body>
+</html>

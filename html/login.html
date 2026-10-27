@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Sign In — TrekIntel</title>
+  <meta name="description" content="Sign in to your TrekIntel account to access your personalized dashboard, manage your logged treks, and view saved favourites.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Manrope:wght@300..800&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/auth.css">
+
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="TrekIntel Home">
+        <div class="brand-icon">
+          <i data-lucide="mountain" style="width: 20px; height: 20px;"></i>
+        </div>
+        <span class="brand-text">Trek<span>Intel</span></span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="explore.html" class="nav-link">Explore Treks</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="signup.html" class="btn btn-primary btn-sm">Create Account</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Auth Wrapper -->
+  <main class="auth-page-wrapper">
+    <div class="auth-split-card">
+      <!-- Visual Side -->
+      <div class="auth-visual-side">
+        <img src="https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?auto=format&fit=crop&w=1200&q=80" alt="Himalayan mountain range" class="auth-visual-bg" />
+        <div class="auth-visual-overlay"></div>
+
+        <div class="auth-visual-content">
+          <div class="auth-visual-logo">
+            <i data-lucide="mountain" style="color: var(--color-accent); width: 28px; height: 28px;"></i>
+            <span>TrekIntel</span>
+          </div>
+        </div>
+
+        <div class="auth-visual-quote">
+          <div class="auth-quote-text">
+            "The mountains are calling, and I must go."
+          </div>
+          <div class="auth-quote-author">
+            <i data-lucide="compass" style="width: 14px; height: 14px;"></i>
+            <span>John Muir &bull; Himalayan Trail Series</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Side -->
+      <div class="auth-form-side">
+        <div class="auth-header">
+          <span class="eyebrow">Welcome Back</span>
+          <h1 class="auth-title">Sign In to TrekIntel</h1>
+          <p class="auth-subtitle">Access your saved expeditions, recorded itineraries, and real-time conditions.</p>
+        </div>
+
+        <div id="login-alert-container"></div>
+
+        <form id="login-form" class="auth-form" novalidate>
+          <div class="form-group" id="email-group">
+            <label class="form-label" for="login-email">Email Address</label>
+            <input type="email" id="login-email" class="form-input" placeholder="trekker@example.com" required autocomplete="email" />
+            <div class="form-error" id="email-error">Please enter a valid email address.</div>
+          </div>
+
+          <div class="form-group" id="password-group">
+            <label class="form-label" for="login-password">Password</label>
+            <div class="input-password-wrapper">
+              <input type="password" id="login-password" class="form-input" placeholder="Enter your password" required autocomplete="current-password" />
+              <button type="button" class="password-toggle-btn" id="password-toggle-btn" aria-label="Toggle password visibility">
+                <i data-lucide="eye" style="width: 18px; height: 18px;"></i>
+              </button>
+            </div>
+            <div class="form-error" id="password-error">Please enter your account password.</div>
+          </div>
+
+          <a href="#" id="forgot-password-link" class="auth-forgot-link">Forgot your password?</a>
+
+          <button type="submit" id="login-submit-btn" class="btn btn-primary btn-block btn-lg" style="margin-top: var(--space-2);">
+            <span>Sign In to Portal</span>
+            <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
+          </button>
+        </form>
+
+        <div class="auth-footer">
+          Don't have an account yet? <a href="signup.html">Create free account</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script type="module" src="../js/main.js"></script>
+  <script type="module">
+    import { signInUser, requestPasswordReset } from '../js/auth.js';
+    import { showToast, getQueryParam } from '../js/utils.js';
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("login-form");
+      const emailInput = document.getElementById("login-email");
+      const passwordInput = document.getElementById("login-password");
+      const submitBtn = document.getElementById("login-submit-btn");
+      const toggleBtn = document.getElementById("password-toggle-btn");
+      const forgotLink = document.getElementById("forgot-password-link");
+      const alertContainer = document.getElementById("login-alert-container");
+
+      // Password toggle
+      toggleBtn.addEventListener("click", () => {
+        const isPassword = passwordInput.type === "password";
+        passwordInput.type = isPassword ? "text" : "password";
+        toggleBtn.innerHTML = isPassword
+          ? `<i data-lucide="eye-off" style="width: 18px; height: 18px;"></i>`
+          : `<i data-lucide="eye" style="width: 18px; height: 18px;"></i>`;
+        if (window.lucide) window.lucide.createIcons({ root: toggleBtn });
+      });
+
+      // Forgot password handler
+      forgotLink.addEventListener("click", async (e) => {
+        e.preventDefault();
+        const email = emailInput.value.trim();
+        if (!email) {
+          showToast("Please type your email address first to receive a password reset link.", "warning");
+          emailInput.focus();
+          return;
+        }
+
+        try {
+          await requestPasswordReset(email);
+          showToast(`Password reset link sent to ${email}`, "success");
+        } catch (err) {
+          showToast("Error requesting reset: " + err.message, "error");
+        }
+      });
+
+      // Submit handler
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        alertContainer.innerHTML = "";
+
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+
+        let hasError = false;
+
+        if (!email || !email.includes("@")) {
+          document.getElementById("email-group").classList.add("has-error");
+          hasError = true;
+        } else {
+          document.getElementById("email-group").classList.remove("has-error");
+        }
+
+        if (!password) {
+          document.getElementById("password-group").classList.add("has-error");
+          hasError = true;
+        } else {
+          document.getElementById("password-group").classList.remove("has-error");
+        }
+
+        if (hasError) return;
+
+        submitBtn.disabled = true;
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = `<span>Signing in...</span>`;
+
+        try {
+          await signInUser(email, password);
+          showToast("Signed in successfully! Redirecting to dashboard...", "success");
+
+          const redirect = getQueryParam("redirect") || "dashboard.html";
+          setTimeout(() => {
+            window.location.href = redirect;
+          }, 600);
+
+        } catch (err) {
+          console.error("Login error:", err);
+          alertContainer.innerHTML = `
+            <div class="alert alert-danger">
+              <div class="alert-icon"><i data-lucide="alert-circle"></i></div>
+              <div class="alert-content">
+                <div class="alert-title">Authentication Failed</div>
+                <div>${err.message || "Invalid email or password. Please verify your credentials."}</div>
+              </div>
+            </div>
+          `;
+          if (window.lucide) window.lucide.createIcons({ root: alertContainer });
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

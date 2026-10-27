@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Saved Favourites — TrekIntel</title>
+  <meta name="description" content="View and manage your bookmarked Himalayan expeditions and dream trekking destinations across Uttarakhand.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Manrope:wght@300..800&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="TrekIntel Home">
+        <div class="brand-icon">
+          <i data-lucide="mountain" style="width: 20px; height: 20px;"></i>
+        </div>
+        <span class="brand-text">Trek<span>Intel</span></span>
+      </a>
+
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="explore.html" class="nav-link">Explore Treks</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <a href="my-treks.html" class="nav-link">My Treks</a>
+        <a href="favorites.html" class="nav-link active">Saved</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div id="nav-auth-actions" style="display: flex; align-items: center; gap: var(--space-3);">
+          <!-- Dynamic Auth populated by auth.js -->
+        </div>
+
+        <button class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+          <i data-lucide="menu" style="width: 24px; height: 24px;"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Page Header -->
+  <section class="section-cream" style="padding: var(--space-10) 0; border-bottom: 1px solid var(--color-border);">
+    <div class="container">
+      <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: var(--space-4);">
+        <div>
+          <span class="eyebrow">Saved Expeditions</span>
+          <h1 style="font-size: clamp(1.85rem, 3.5vw, 2.5rem); margin-bottom: var(--space-2);">My Bookmarked Treks</h1>
+          <p style="font-size: 1rem; color: var(--color-text-secondary); margin-bottom: 0;">
+            Himalayan trails saved to your wishlist for upcoming trekking seasons.
+          </p>
+        </div>
+
+        <div style="font-size: 0.9rem; color: var(--color-text-secondary);">
+          Total: <span id="favorites-count" style="font-weight: 700; color: var(--color-primary-dark);">Loading...</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <main class="section section-cream" style="padding-top: var(--space-8);">
+    <div class="container">
+      <div id="favorites-grid" class="trek-grid">
+        <!-- Rendered via favorites.js -->
+      </div>
+    </div>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand-logo" style="color: #FFFFFF;">
+            <div class="brand-icon">
+              <i data-lucide="mountain" style="width: 20px; height: 20px;"></i>
+            </div>
+            <span class="brand-text">Trek<span>Intel</span></span>
+          </a>
+          <p>
+            An open Himalayan trekking intelligence platform committed to responsible exploration, accurate trail telemetry, and Leave No Trace ethics across Uttarakhand and beyond.
+          </p>
+          <div style="display: flex; gap: var(--space-3); color: #8E9F94;">
+            <button type="button" class="btn btn-sm btn-dark open-supabase-config-btn" style="font-size: 0.775rem; padding: 4px 10px;">
+              <i data-lucide="database" style="width: 14px; height: 14px;"></i>
+              <span>Supabase Status / Config</span>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="index.html" class="footer-link">Home</a></li>
+            <li><a href="explore.html" class="footer-link">Explore Treks</a></li>
+            <li><a href="dashboard.html" class="footer-link">Trekker Dashboard</a></li>
+            <li><a href="my-treks.html" class="footer-link">My Expeditions</a></li>
+            <li><a href="favorites.html" class="footer-link">Saved Favourites</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Iconic Trails</h4>
+          <ul class="footer-links">
+            <li><a href="trek-details.html?id=kedarkantha-summit" class="footer-link">Kedarkantha Summit</a></li>
+            <li><a href="trek-details.html?id=dayara-bugyal" class="footer-link">Dayara Bugyal</a></li>
+            <li><a href="trek-details.html?id=har-ki-dun" class="footer-link">Har Ki Dun Valley</a></li>
+            <li><a href="trek-details.html?id=valley-of-flowers" class="footer-link">Valley of Flowers</a></li>
+            <li><a href="trek-details.html?id=chopta-chandrashila" class="footer-link">Chopta Chandrashila</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Safety & Environment</h4>
+          <div class="footer-disclaimer-box">
+            <strong>Leave No Trace:</strong> The Himalayas are fragile high-altitude ecosystems. Never litter, avoid single-use plastics, and respect local sacred forests and mountain customs. Weather forecasts are predictive guides, not safety guarantees.
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 TrekIntel — Himalayan Trekking Intelligence Platform. All rights reserved.</div>
+        <div style="display: flex; gap: var(--space-4);">
+          <span>Telemetry via Open-Meteo</span>
+          <span>&bull;</span>
+          <span>Maps via OpenStreetMap</span>
+          <span>&bull;</span>
+          <span>Auth & DB via Supabase</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="../js/main.js"></script>
+  <script type="module" src="../js/favorites.js"></script>
+</body>
+</html>

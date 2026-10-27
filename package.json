@@ -1,0 +1,18 @@
+{
+  "name": "trekintel",
+  "version": "1.0.0",
+  "description": "TrekIntel — Himalayan Trekking Intelligence Platform",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "keywords": [
+    "trekking",
+    "himalayas",
+    "uttarakhand",
+    "weather",
+    "supabase"
+  ],
+  "author": "Ayush Badola",
+  "license": "MIT"
+}

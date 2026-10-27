@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Account — TrekIntel</title>
+  <meta name="description" content="Register for a TrekIntel account to save favorite Himalayan treks, create personal route records, and track mountain weather telemetry.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Manrope:wght@300..800&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/auth.css">
+
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="TrekIntel Home">
+        <div class="brand-icon">
+          <i data-lucide="mountain" style="width: 20px; height: 20px;"></i>
+        </div>
+        <span class="brand-text">Trek<span>Intel</span></span>
+      </a>
+
+      <nav class="nav-menu">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="explore.html" class="nav-link">Explore Treks</a>
+      </nav>
+
+      <div class="nav-actions">
+        <a href="login.html" class="btn btn-ghost btn-sm">Already a member? Sign In</a>
+      </div>
+    </div>
+  </header>
+
+  <!-- Auth Wrapper -->
+  <main class="auth-page-wrapper">
+    <div class="auth-split-card">
+      <!-- Visual Side -->
+      <div class="auth-visual-side">
+        <img src="https://images.unsplash.com/photo-1519681393784-d120267933ba?auto=format&fit=crop&w=1200&q=80" alt="Himalayan mountain peaks" class="auth-visual-bg" />
+        <div class="auth-visual-overlay"></div>
+
+        <div class="auth-visual-content">
+          <div class="auth-visual-logo">
+            <i data-lucide="mountain" style="color: var(--color-accent); width: 28px; height: 28px;"></i>
+            <span>TrekIntel</span>
+          </div>
+        </div>
+
+        <div class="auth-visual-quote">
+          <div class="auth-quote-text">
+            "Climb the mountain not so the world can see you, but so that you can see the world."
+          </div>
+          <div class="auth-quote-author">
+            <i data-lucide="compass" style="width: 14px; height: 14px;"></i>
+            <span>David McCullough Jr. &bull; Himalayan Trail Series</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Form Side -->
+      <div class="auth-form-side">
+        <div class="auth-header">
+          <span class="eyebrow">Join The Expedition</span>
+          <h1 class="auth-title">Create Free Account</h1>
+          <p class="auth-subtitle">Save your dream routes, log private treks, and access real-time atmospheric data.</p>
+        </div>
+
+        <div id="signup-alert-container"></div>
+
+        <form id="signup-form" class="auth-form" novalidate>
+          <div class="form-group" id="name-group">
+            <label class="form-label" for="signup-name">Full Name</label>
+            <input type="text" id="signup-name" class="form-input" placeholder="e.g. Ayush Badola" required autocomplete="name" />
+            <div class="form-error" id="name-error">Please enter your full name.</div>
+          </div>
+
+          <div class="form-group" id="email-group">
+            <label class="form-label" for="signup-email">Email Address</label>
+            <input type="email" id="signup-email" class="form-input" placeholder="trekker@example.com" required autocomplete="email" />
+            <div class="form-error" id="email-error">Please enter a valid email address.</div>
+          </div>
+
+          <div class="form-group" id="password-group">
+            <label class="form-label" for="signup-password">Password</label>
+            <div class="input-password-wrapper">
+              <input type="password" id="signup-password" class="form-input" placeholder="Minimum 6 characters" required autocomplete="new-password" />
+              <button type="button" class="password-toggle-btn" id="password-toggle-btn" aria-label="Toggle password visibility">
+                <i data-lucide="eye" style="width: 18px; height: 18px;"></i>
+              </button>
+            </div>
+            <div class="password-strength-bar" id="password-strength-bar">
+              <div class="strength-segment" id="str-1"></div>
+              <div class="strength-segment" id="str-2"></div>
+              <div class="strength-segment" id="str-3"></div>
+              <div class="strength-segment" id="str-4"></div>
+            </div>
+            <div class="form-hint" id="password-hint">Use at least 6 characters with mixed letters and numbers.</div>
+            <div class="form-error" id="password-error">Password must be at least 6 characters.</div>
+          </div>
+
+          <div class="form-group" id="confirm-group">
+            <label class="form-label" for="signup-confirm">Confirm Password</label>
+            <input type="password" id="signup-confirm" class="form-input" placeholder="Repeat your password" required autocomplete="new-password" />
+            <div class="form-error" id="confirm-error">Passwords do not match.</div>
+          </div>
+
+          <button type="submit" id="signup-submit-btn" class="btn btn-primary btn-block btn-lg" style="margin-top: var(--space-4);">
+            <span>Create Account</span>
+            <i data-lucide="arrow-right" style="width: 18px; height: 18px;"></i>
+          </button>
+        </form>
+
+        <div class="auth-footer">
+          Already have an account? <a href="login.html">Sign in here</a>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Scripts -->
+  <script type="module" src="../js/main.js"></script>
+  <script type="module">
+    import { signUpUser } from '../js/auth.js';
+    import { showToast } from '../js/utils.js';
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const form = document.getElementById("signup-form");
+      const nameInput = document.getElementById("signup-name");
+      const emailInput = document.getElementById("signup-email");
+      const passwordInput = document.getElementById("signup-password");
+      const confirmInput = document.getElementById("signup-confirm");
+      const submitBtn = document.getElementById("signup-submit-btn");
+      const toggleBtn = document.getElementById("password-toggle-btn");
+      const alertContainer = document.getElementById("signup-alert-container");
+
+      // Password toggle
+      toggleBtn.addEventListener("click", () => {
+        const isPassword = passwordInput.type === "password";
+        passwordInput.type = isPassword ? "text" : "password";
+        confirmInput.type = isPassword ? "text" : "password";
+        toggleBtn.innerHTML = isPassword
+          ? `<i data-lucide="eye-off" style="width: 18px; height: 18px;"></i>`
+          : `<i data-lucide="eye" style="width: 18px; height: 18px;"></i>`;
+        if (window.lucide) window.lucide.createIcons({ root: toggleBtn });
+      });
+
+      // Simple password strength calculation
+      passwordInput.addEventListener("input", () => {
+        const val = passwordInput.value;
+        const s1 = document.getElementById("str-1");
+        const s2 = document.getElementById("str-2");
+        const s3 = document.getElementById("str-3");
+        const s4 = document.getElementById("str-4");
+
+        [s1, s2, s3, s4].forEach(s => s.className = "strength-segment");
+
+        if (val.length >= 2) s1.classList.add("strength-weak");
+        if (val.length >= 6) s2.classList.add("strength-fair");
+        if (val.length >= 8 && /[0-9]/.test(val)) s3.classList.add("strength-good");
+        if (val.length >= 10 && /[^A-Za-z0-9]/.test(val)) s4.classList.add("strength-strong");
+      });
+
+      // Form submission
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        alertContainer.innerHTML = "";
+
+        const fullName = nameInput.value.trim();
+        const email = emailInput.value.trim();
+        const password = passwordInput.value;
+        const confirm = confirmInput.value;
+
+        let hasError = false;
+
+        if (!fullName || fullName.length < 2) {
+          document.getElementById("name-group").classList.add("has-error");
+          hasError = true;
+        } else {
+          document.getElementById("name-group").classList.remove("has-error");
+        }
+
+        if (!email || !email.includes("@")) {
+          document.getElementById("email-group").classList.add("has-error");
+          hasError = true;
+        } else {
+          document.getElementById("email-group").classList.remove("has-error");
+        }
+
+        if (!password || password.length < 6) {
+          document.getElementById("password-group").classList.add("has-error");
+          hasError = true;
+        } else {
+          document.getElementById("password-group").classList.remove("has-error");
+        }
+
+        if (password !== confirm) {
+          document.getElementById("confirm-group").classList.add("has-error");
+          hasError = true;
+        } else {
+          document.getElementById("confirm-group").classList.remove("has-error");
+        }
+
+        if (hasError) return;
+
+        submitBtn.disabled = true;
+        const originalText = submitBtn.innerHTML;
+        submitBtn.innerHTML = `<span>Creating account...</span>`;
+
+        try {
+          const res = await signUpUser(email, password, fullName);
+
+          if (res.requiresConfirmation) {
+            form.style.display = "none";
+            alertContainer.innerHTML = `
+              <div class="verify-email-box">
+                <i data-lucide="mail-check" style="width: 48px; height: 48px;"></i>
+                <h3 style="font-size: 1.35rem; margin-bottom: var(--space-2);">Verify Your Email Address</h3>
+                <p style="font-size: 0.95rem; color: var(--color-text-secondary); margin-bottom: var(--space-4);">
+                  We've sent a verification link to <strong>${email}</strong>. Please check your inbox and confirm your email to activate your account.
+                </p>
+                <a href="login.html" class="btn btn-primary btn-sm">Return to Login</a>
+              </div>
+            `;
+            if (window.lucide) window.lucide.createIcons({ root: alertContainer });
+          } else {
+            showToast("Account successfully registered! Redirecting to your dashboard...", "success");
+            setTimeout(() => {
+              window.location.href = "dashboard.html";
+            }, 800);
+          }
+
+        } catch (err) {
+          console.error("Signup error:", err);
+          alertContainer.innerHTML = `
+            <div class="alert alert-danger">
+              <div class="alert-icon"><i data-lucide="alert-circle"></i></div>
+              <div class="alert-content">
+                <div class="alert-title">Registration Failed</div>
+                <div>${err.message || "Could not register account. Please try again."}</div>
+              </div>
+            </div>
+          `;
+          if (window.lucide) window.lucide.createIcons({ root: alertContainer });
+          submitBtn.disabled = false;
+          submitBtn.innerHTML = originalText;
+        }
+      });
+    });
+  </script>
+</body>
+</html>

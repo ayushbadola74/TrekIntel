@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Profile — TrekIntel</title>
+  <meta name="description" content="Manage your TrekIntel account credentials, display name, password security, and trekking profile.">
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Manrope:wght@300..800&display=swap" rel="stylesheet">
+
+  <!-- Styles -->
+  <link rel="stylesheet" href="../css/style.css">
+  <link rel="stylesheet" href="../css/components.css">
+  <link rel="stylesheet" href="../css/dashboard.css">
+
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body>
+
+  <!-- Navigation Header -->
+  <header class="site-header">
+    <div class="container nav-container">
+      <a href="index.html" class="brand-logo" aria-label="TrekIntel Home">
+        <div class="brand-icon">
+          <i data-lucide="mountain" style="width: 20px; height: 20px;"></i>
+        </div>
+        <span class="brand-text">Trek<span>Intel</span></span>
+      </a>
+
+      <nav class="nav-menu" aria-label="Main Navigation">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="explore.html" class="nav-link">Explore Treks</a>
+        <a href="dashboard.html" class="nav-link">Dashboard</a>
+        <a href="my-treks.html" class="nav-link">My Treks</a>
+        <a href="favorites.html" class="nav-link">Saved</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div id="nav-auth-actions" style="display: flex; align-items: center; gap: var(--space-3);">
+          <!-- Dynamic Auth populated by auth.js -->
+        </div>
+
+        <button class="mobile-nav-toggle" aria-label="Toggle navigation menu">
+          <i data-lucide="menu" style="width: 24px; height: 24px;"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main class="section section-cream" style="padding-top: var(--space-12); padding-bottom: var(--space-20);">
+    <div class="container container-narrow">
+
+      <div class="profile-card">
+        <!-- Avatar Header -->
+        <div class="profile-avatar-header">
+          <div class="profile-avatar-large" id="profile-large-avatar">T</div>
+          <div class="profile-details-top">
+            <h1 id="profile-display-name" style="font-size: 1.75rem; margin-bottom: 2px;">Trekker</h1>
+            <div id="profile-email-address" class="profile-email-badge">trekker@example.com</div>
+            <div class="profile-meta-info">
+              <span id="profile-created-date">Member since 2024</span>
+              <span>&bull;</span>
+              <span style="color: var(--color-success); font-weight: 600;">Active Account</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Update Display Name Section -->
+        <div style="margin-bottom: var(--space-10);">
+          <h2 style="font-size: 1.25rem; margin-bottom: var(--space-4); color: var(--color-primary-dark);">
+            Personal Information
+          </h2>
+
+          <form id="profile-update-form" novalidate>
+            <div class="form-group">
+              <label class="form-label" for="profile-name-input">Display / Full Name</label>
+              <input type="text" id="profile-name-input" class="form-input" required />
+              <div class="form-hint">This name is shown across your created routes and dashboard greeting.</div>
+            </div>
+
+            <div class="form-group">
+              <label class="form-label" for="profile-email-input">
+                <span>Account Email</span>
+                <span class="optional">(Primary authentication identifier)</span>
+              </label>
+              <input type="email" id="profile-email-input" class="form-input" disabled style="background-color: var(--color-cream); cursor: not-allowed;" />
+            </div>
+
+            <button type="submit" id="profile-save-btn" class="btn btn-primary btn-sm" style="margin-top: var(--space-2);">
+              <span>Save Changes</span>
+            </button>
+          </form>
+        </div>
+
+        <!-- Security & Password -->
+        <div style="padding-top: var(--space-8); border-top: 1px solid var(--color-border); margin-bottom: var(--space-10);">
+          <h2 style="font-size: 1.25rem; margin-bottom: var(--space-2); color: var(--color-primary-dark);">
+            Security & Authentication
+          </h2>
+          <p style="font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: var(--space-4);">
+            Request a secure password reset link sent directly to your registered email address via Supabase Auth.
+          </p>
+
+          <button type="button" id="profile-reset-password-btn" class="btn btn-secondary btn-sm">
+            <i data-lucide="key" style="width: 15px; height: 15px;"></i>
+            <span>Request Password Reset Email</span>
+          </button>
+        </div>
+
+        <!-- Session & Sign Out -->
+        <div style="padding-top: var(--space-8); border-top: 1px solid var(--color-border);">
+          <h2 style="font-size: 1.25rem; margin-bottom: var(--space-2); color: var(--color-danger);">
+            Sign Out
+          </h2>
+          <p style="font-size: 0.9rem; color: var(--color-text-secondary); margin-bottom: var(--space-4);">
+            Terminate your active authenticated session on this browser device.
+          </p>
+
+          <button type="button" id="profile-signout-btn" class="btn btn-outline-danger btn-sm">
+            <i data-lucide="log-out" style="width: 15px; height: 15px;"></i>
+            <span>Sign Out of TrekIntel</span>
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Global Footer -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="brand-logo" style="color: #FFFFFF;">
+            <div class="brand-icon">
+              <i data-lucide="mountain" style="width: 20px; height: 20px;"></i>
+            </div>
+            <span class="brand-text">Trek<span>Intel</span></span>
+          </a>
+          <p>
+            An open Himalayan trekking intelligence platform committed to responsible exploration, accurate trail telemetry, and Leave No Trace ethics across Uttarakhand and beyond.
+          </p>
+          <div style="display: flex; gap: var(--space-3); color: #8E9F94;">
+            <button type="button" class="btn btn-sm btn-dark open-supabase-config-btn" style="font-size: 0.775rem; padding: 4px 10px;">
+              <i data-lucide="database" style="width: 14px; height: 14px;"></i>
+              <span>Supabase Status / Config</span>
+            </button>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Navigation</h4>
+          <ul class="footer-links">
+            <li><a href="index.html" class="footer-link">Home</a></li>
+            <li><a href="explore.html" class="footer-link">Explore Treks</a></li>
+            <li><a href="dashboard.html" class="footer-link">Trekker Dashboard</a></li>
+            <li><a href="my-treks.html" class="footer-link">My Expeditions</a></li>
+            <li><a href="favorites.html" class="footer-link">Saved Favourites</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Iconic Trails</h4>
+          <ul class="footer-links">
+            <li><a href="trek-details.html?id=kedarkantha-summit" class="footer-link">Kedarkantha Summit</a></li>
+            <li><a href="trek-details.html?id=dayara-bugyal" class="footer-link">Dayara Bugyal</a></li>
+            <li><a href="trek-details.html?id=har-ki-dun" class="footer-link">Har Ki Dun Valley</a></li>
+            <li><a href="trek-details.html?id=valley-of-flowers" class="footer-link">Valley of Flowers</a></li>
+            <li><a href="trek-details.html?id=chopta-chandrashila" class="footer-link">Chopta Chandrashila</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h4 class="footer-heading">Safety & Environment</h4>
+          <div class="footer-disclaimer-box">
+            <strong>Leave No Trace:</strong> The Himalayas are fragile high-altitude ecosystems. Never litter, avoid single-use plastics, and respect local sacred forests and mountain customs. Weather forecasts are predictive guides, not safety guarantees.
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>&copy; 2026 TrekIntel — Himalayan Trekking Intelligence Platform. All rights reserved.</div>
+        <div style="display: flex; gap: var(--space-4);">
+          <span>Telemetry via Open-Meteo</span>
+          <span>&bull;</span>
+          <span>Maps via OpenStreetMap</span>
+          <span>&bull;</span>
+          <span>Auth & DB via Supabase</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script type="module" src="../js/main.js"></script>
+  <script type="module" src="../js/profile.js"></script>
+</body>
+</html>
